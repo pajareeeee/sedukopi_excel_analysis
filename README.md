@@ -2,9 +2,9 @@
 
 Proyek portofolio data analyst keempat. Setelah [Python](https://github.com/pajareeeee/gayanara_ecommerce_analysis), [SQL](https://github.com/pajareeeee/gayanara_sql_analysis), dan [Power BI](https://github.com/pajareeeee/sakumaya_powerbi_dashboard), kali ini analisisnya dikerjakan sepenuhnya di **Excel**: validasi data, penggabungan tabel, Pivot Table, dan dashboard satu halaman.
 
-> Dataset simulasi "Sedukopi "Jaringan Kedai Kopi" dari [Ngulik Data](https://ngulikdata.com/datasets/sedukopi). Semua data bersifat fiktif.
+> Dataset simulasi "Sedukopi – Jaringan Kedai Kopi" dari [Ngulik Data](https://ngulikdata.com/datasets/sedukopi). Semua data bersifat fiktif.
 
-![Dashboard Sedukopi](images/dashboard.jpeg)
+[![Dashboard Sedukopi](https://github.com/pajareeeee/sedukopi_excel_analysis/raw/main/images/dashboard.jpeg)](https://github.com/pajareeeee/sedukopi_excel_analysis/blob/main/images/dashboard.jpeg)
 
 ## Pertanyaan Bisnis
 
@@ -38,6 +38,7 @@ File: `sedukopi_analisis.xlsx`
 - Sheet `data` dibuat dari tabel detail dengan `XLOOKUP` untuk mengambil tanggal, outlet, kategori, harga pokok, tipe order, dan metode bayar, plus kolom hitung biaya, margin, bulan, dan jam
 - Revenue = `subtotal` item. Margin = `subtotal` - (`quantity` x `cost_price`), jadi margin kotor
 - Analisis staf memakai staf berstatus aktif, karena data hanya mencatat status terakhir
+- Perbandingan antar outlet memperhitungkan lama operasi, karena beberapa outlet baru buka pada 2023
 
 ## Temuan Utama
 
@@ -45,26 +46,35 @@ File: `sedukopi_analisis.xlsx`
 - Revenue tahunan naik dari Rp80 juta (2022) ke Rp140 juta (2024). Bulan tertinggi Mar 2025 (Rp22,1 juta), terendah Apr 2022 (Rp4,8 juta)
 - Tujuh jam sibuk (07-08, 12-13, 17-19) menyumbang sekitar 78% revenue. Jam 13 tertinggi, jam 11 paling sepi
 - Dine in 50% revenue, takeaway 30%, delivery 20%
-- QRIS metode bayar terbesar (25,8%), disusul GoPay (24,0%) dan OVO (19,7%)
+- QRIS metode bayar terbesar (25,8%), disusul GoPay (24,0%) dan OVO (19,7%). Kartu Debit terendah (15,0%)
 - Makanan kategori terbesar (Rp149 juta), tapi persen margin hampir sama di semua kategori (sekitar 70%)
 - Outlet tertinggi OUT003 Senopati (Rp25,5 juta), terendah OUT020 Margonda (Rp16,0 juta)
-- Kapasitas kursi tidak berhubungan dengan revenue (korelasi 0,08)
+- Kapasitas kursi tidak terlihat berhubungan dengan revenue (korelasi 0,08)
 
 ## Insight dan Rekomendasi
 
-- **Pertumbuhan sebagian karena outlet bertambah.** Outlet aktif naik dari 12 (awal 2022) ke 18 (Juni 2023), jadi revenue yang naik belum tentu berarti tiap outlet makin laris. Lonjakan Jan-Mar 2025 datang dari jumlah order (sekitar 146 menjadi 246 per bulan), bukan nilai per order. Ini perlu dicek dan mungkin hanya pola dataset simulasi.
+- **Pertumbuhan sebagian karena outlet bertambah.** Outlet aktif naik dari 12 (awal 2022) ke 18 (Juni 2023), jadi revenue yang naik belum tentu berarti tiap outlet makin laris. Lonjakan Jan-Mar 2025 datang dari jumlah order (118-160 per bulan pada Okt-Des 2024 menjadi 231-273 per bulan), bukan dari nilai per order yang tetap di kisaran Rp72-86 ribu. Lonjakan ini terjadi merata di hampir semua dari 18 outlet, bukan karena outlet baru, jadi kemungkinan besar pola dataset simulasi.
 - **Jam sibuk menentukan penjadwalan.** Jadwal staf bisa difokuskan ke tiga puncak (pagi, makan siang, sore). Promo di jam sepi layak dicoba, tapi data ini belum bisa menjawab apakah promo akan efektif, jadi perlu diuji dulu.
 - **Dine in separuh revenue.** Pengalaman di outlet paling penting. Delivery 20% masih bisa dikembangkan, tapi data belum memuat biaya pengiriman atau komisi platform.
+- **Pembayaran digital mendominasi.** QRIS, GoPay, dan OVO menyumbang sekitar 70% revenue. Data belum memuat biaya per metode bayar, jadi belum bisa dinilai metode mana yang paling menguntungkan.
 - **Untung ditentukan volume, bukan harga pokok.** Persen margin tiap kategori hampir sama, jadi menaikkan penjualan Makanan dan Coffee lebih berpengaruh daripada mengubah harga pokok.
-- **Menambah kursi belum tentu menaikkan penjualan.** Outlet 50 kursi (OUT003, OUT014) justru di atas outlet 70 kursi (OUT006, OUT013).
-- **Revenue per staf layak ditinjau.** OUT008 dan OUT010 punya 6 staf tapi revenue per staf rendah, sementara OUT016 dan OUT009 tertinggi dengan 3 staf. Revenue per staf yang tinggi bisa berarti efisien atau justru kekurangan orang, data ini belum bisa membedakannya.
+- **Menambah kursi belum tentu menaikkan penjualan.** Rata-rata revenue per outlet hampir sama di semua kelompok kursi: 50 kursi atau kurang Rp21,8 juta, 55-60 kursi Rp20,9 juta, 65-70 kursi Rp23,4 juta.
+- **Revenue per staf perlu dibaca hati-hati.** OUT016 dan OUT009 punya revenue per staf tertinggi, tetapi masing-masing hanya punya 3 staf aktif karena 3 dari 6 stafnya sudah keluar, jadi belum tentu lebih efisien. OUT008 dan OUT010 punya 6 staf aktif dengan revenue per staf rendah. Karena datanya sampel, ini hanya indikasi awal, bukan alasan langsung mengubah jadwal.
 
 ## Keterbatasan
 
-- Dataset simulasi dan hanya sampel transaksi (5.000 order). Gaji bulanan staf per outlet sekitar 13-44 kali lipat revenue bulanannya, jadi rasio gaji terhadap revenue dan profitabilitas tidak bisa dihitung secara bermakna.
+- Dataset simulasi dan hanya sampel transaksi (5.000 order, sekitar 8 order per outlet per bulan). Gaji bulanan staf per outlet sekitar 13-44 kali lipat revenue bulanannya, jadi rasio gaji terhadap revenue dan profitabilitas tidak bisa dihitung secara bermakna.
 - Margin adalah margin kotor (belum termasuk gaji, sewa, dan biaya operasional)
 - Outlet yang buka 2023 (OUT017, OUT019, OUT020) punya periode jualan lebih pendek, jadi perbandingan total antar outlet kurang adil. OUT015 dan OUT018 tidak punya order (status temporarily closed)
+- Data staf hanya mencatat status terakhir tanpa tanggal keluar, jadi hanya staf aktif yang dihitung
 - 2025 baru tiga bulan (Jan-Mar), jangan dibandingkan dengan total tahun lain
+
+## Pengembangan Berikutnya
+
+- Pivot per hari dalam seminggu (Minggu tertinggi, Rabu terendah, selisih sekitar 18%)
+- Pivot per menu: Club Sandwich terbesar, 10 dari 80 menu tidak pernah terjual
+- Revenue per staf dari kolom `staff_id` di tabel orders, bukan dari jumlah staf
+- Ringkasan per kota dan provinsi
 
 ## Cara Membuka
 
